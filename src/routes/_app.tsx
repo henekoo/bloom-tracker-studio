@@ -24,9 +24,5 @@ function AppLayout() {
       </div>
     );
   }
-  return (
-    <AppShell>
-      <Outlet />
-    </AppShell>
-  );
+  return <AppShell />;
 }
