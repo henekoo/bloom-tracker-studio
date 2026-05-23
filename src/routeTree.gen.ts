@@ -9,38 +9,185 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppSpeciesRouteImport } from './routes/_app.species'
+import { Route as AppProjectsRouteImport } from './routes/_app.projects'
+import { Route as AppObservationsRouteImport } from './routes/_app.observations'
+import { Route as AppMapRouteImport } from './routes/_app.map'
+import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppProjectsNewRouteImport } from './routes/_app.projects.new'
+import { Route as AppProjectsIdRouteImport } from './routes/_app.projects.$id'
+import { Route as AppObservationsNewRouteImport } from './routes/_app.observations.new'
+import { Route as AppObservationsIdRouteImport } from './routes/_app.observations.$id'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppSpeciesRoute = AppSpeciesRouteImport.update({
+  id: '/species',
+  path: '/species',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProjectsRoute = AppProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppObservationsRoute = AppObservationsRouteImport.update({
+  id: '/observations',
+  path: '/observations',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMapRoute = AppMapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProjectsNewRoute = AppProjectsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AppProjectsRoute,
+} as any)
+const AppProjectsIdRoute = AppProjectsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppProjectsRoute,
+} as any)
+const AppObservationsNewRoute = AppObservationsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AppObservationsRoute,
+} as any)
+const AppObservationsIdRoute = AppObservationsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppObservationsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/map': typeof AppMapRoute
+  '/observations': typeof AppObservationsRouteWithChildren
+  '/projects': typeof AppProjectsRouteWithChildren
+  '/species': typeof AppSpeciesRoute
+  '/observations/$id': typeof AppObservationsIdRoute
+  '/observations/new': typeof AppObservationsNewRoute
+  '/projects/$id': typeof AppProjectsIdRoute
+  '/projects/new': typeof AppProjectsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/map': typeof AppMapRoute
+  '/observations': typeof AppObservationsRouteWithChildren
+  '/projects': typeof AppProjectsRouteWithChildren
+  '/species': typeof AppSpeciesRoute
+  '/observations/$id': typeof AppObservationsIdRoute
+  '/observations/new': typeof AppObservationsNewRoute
+  '/projects/$id': typeof AppProjectsIdRoute
+  '/projects/new': typeof AppProjectsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/map': typeof AppMapRoute
+  '/_app/observations': typeof AppObservationsRouteWithChildren
+  '/_app/projects': typeof AppProjectsRouteWithChildren
+  '/_app/species': typeof AppSpeciesRoute
+  '/_app/observations/$id': typeof AppObservationsIdRoute
+  '/_app/observations/new': typeof AppObservationsNewRoute
+  '/_app/projects/$id': typeof AppProjectsIdRoute
+  '/_app/projects/new': typeof AppProjectsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/map'
+    | '/observations'
+    | '/projects'
+    | '/species'
+    | '/observations/$id'
+    | '/observations/new'
+    | '/projects/$id'
+    | '/projects/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/map'
+    | '/observations'
+    | '/projects'
+    | '/species'
+    | '/observations/$id'
+    | '/observations/new'
+    | '/projects/$id'
+    | '/projects/new'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/auth'
+    | '/_app/dashboard'
+    | '/_app/map'
+    | '/_app/observations'
+    | '/_app/projects'
+    | '/_app/species'
+    | '/_app/observations/$id'
+    | '/_app/observations/new'
+    | '/_app/projects/$id'
+    | '/_app/projects/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +195,122 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/species': {
+      id: '/_app/species'
+      path: '/species'
+      fullPath: '/species'
+      preLoaderRoute: typeof AppSpeciesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/projects': {
+      id: '/_app/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof AppProjectsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/observations': {
+      id: '/_app/observations'
+      path: '/observations'
+      fullPath: '/observations'
+      preLoaderRoute: typeof AppObservationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/map': {
+      id: '/_app/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof AppMapRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/projects/new': {
+      id: '/_app/projects/new'
+      path: '/new'
+      fullPath: '/projects/new'
+      preLoaderRoute: typeof AppProjectsNewRouteImport
+      parentRoute: typeof AppProjectsRoute
+    }
+    '/_app/projects/$id': {
+      id: '/_app/projects/$id'
+      path: '/$id'
+      fullPath: '/projects/$id'
+      preLoaderRoute: typeof AppProjectsIdRouteImport
+      parentRoute: typeof AppProjectsRoute
+    }
+    '/_app/observations/new': {
+      id: '/_app/observations/new'
+      path: '/new'
+      fullPath: '/observations/new'
+      preLoaderRoute: typeof AppObservationsNewRouteImport
+      parentRoute: typeof AppObservationsRoute
+    }
+    '/_app/observations/$id': {
+      id: '/_app/observations/$id'
+      path: '/$id'
+      fullPath: '/observations/$id'
+      preLoaderRoute: typeof AppObservationsIdRouteImport
+      parentRoute: typeof AppObservationsRoute
+    }
   }
 }
 
+interface AppObservationsRouteChildren {
+  AppObservationsIdRoute: typeof AppObservationsIdRoute
+  AppObservationsNewRoute: typeof AppObservationsNewRoute
+}
+
+const AppObservationsRouteChildren: AppObservationsRouteChildren = {
+  AppObservationsIdRoute: AppObservationsIdRoute,
+  AppObservationsNewRoute: AppObservationsNewRoute,
+}
+
+const AppObservationsRouteWithChildren = AppObservationsRoute._addFileChildren(
+  AppObservationsRouteChildren,
+)
+
+interface AppProjectsRouteChildren {
+  AppProjectsIdRoute: typeof AppProjectsIdRoute
+  AppProjectsNewRoute: typeof AppProjectsNewRoute
+}
+
+const AppProjectsRouteChildren: AppProjectsRouteChildren = {
+  AppProjectsIdRoute: AppProjectsIdRoute,
+  AppProjectsNewRoute: AppProjectsNewRoute,
+}
+
+const AppProjectsRouteWithChildren = AppProjectsRoute._addFileChildren(
+  AppProjectsRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppMapRoute: typeof AppMapRoute
+  AppObservationsRoute: typeof AppObservationsRouteWithChildren
+  AppProjectsRoute: typeof AppProjectsRouteWithChildren
+  AppSpeciesRoute: typeof AppSpeciesRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppDashboardRoute: AppDashboardRoute,
+  AppMapRoute: AppMapRoute,
+  AppObservationsRoute: AppObservationsRouteWithChildren,
+  AppProjectsRoute: AppProjectsRouteWithChildren,
+  AppSpeciesRoute: AppSpeciesRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
