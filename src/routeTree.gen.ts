@@ -16,6 +16,7 @@ import { Route as AppSpeciesRouteImport } from './routes/_app.species'
 import { Route as AppProjectsRouteImport } from './routes/_app.projects'
 import { Route as AppObservationsRouteImport } from './routes/_app.observations'
 import { Route as AppMapRouteImport } from './routes/_app.map'
+import { Route as AppExploreRouteImport } from './routes/_app.explore'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppProjectsNewRouteImport } from './routes/_app.projects.new'
 import { Route as AppProjectsIdRouteImport } from './routes/_app.projects.$id'
@@ -56,6 +57,11 @@ const AppMapRoute = AppMapRouteImport.update({
   path: '/map',
   getParentRoute: () => AppRoute,
 } as any)
+const AppExploreRoute = AppExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AppDashboardRoute
+  '/explore': typeof AppExploreRoute
   '/map': typeof AppMapRoute
   '/observations': typeof AppObservationsRouteWithChildren
   '/projects': typeof AppProjectsRouteWithChildren
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AppDashboardRoute
+  '/explore': typeof AppExploreRoute
   '/map': typeof AppMapRoute
   '/observations': typeof AppObservationsRouteWithChildren
   '/projects': typeof AppProjectsRouteWithChildren
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/explore': typeof AppExploreRoute
   '/_app/map': typeof AppMapRoute
   '/_app/observations': typeof AppObservationsRouteWithChildren
   '/_app/projects': typeof AppProjectsRouteWithChildren
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/explore'
     | '/map'
     | '/observations'
     | '/projects'
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/explore'
     | '/map'
     | '/observations'
     | '/projects'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/auth'
     | '/_app/dashboard'
+    | '/_app/explore'
     | '/_app/map'
     | '/_app/observations'
     | '/_app/projects'
@@ -221,6 +233,13 @@ declare module '@tanstack/react-router' {
       path: '/map'
       fullPath: '/map'
       preLoaderRoute: typeof AppMapRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/explore': {
+      id: '/_app/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof AppExploreRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/dashboard': {
@@ -291,6 +310,7 @@ const AppProjectsRouteWithChildren = AppProjectsRoute._addFileChildren(
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppExploreRoute: typeof AppExploreRoute
   AppMapRoute: typeof AppMapRoute
   AppObservationsRoute: typeof AppObservationsRouteWithChildren
   AppProjectsRoute: typeof AppProjectsRouteWithChildren
@@ -299,6 +319,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppExploreRoute: AppExploreRoute,
   AppMapRoute: AppMapRoute,
   AppObservationsRoute: AppObservationsRouteWithChildren,
   AppProjectsRoute: AppProjectsRouteWithChildren,
@@ -315,3 +336,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
