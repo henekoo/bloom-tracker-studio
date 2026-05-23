@@ -1,12 +1,13 @@
 import { Link, Outlet, useRouter } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/use-auth";
-import { LayoutDashboard, Leaf, FolderTree, Map as MapIcon, Sprout, LogOut, Plus, Menu, Moon, Sun } from "lucide-react";
+import { LayoutDashboard, Leaf, FolderTree, Map as MapIcon, Sprout, LogOut, Plus, Menu, Moon, Sun, Globe2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/dashboard", label: "Kojelauta", icon: LayoutDashboard },
+  { to: "/explore", label: "Tutki lajeja", icon: Globe2 },
   { to: "/observations", label: "Havainnot", icon: Leaf },
   { to: "/projects", label: "Projektit", icon: FolderTree },
   { to: "/map", label: "Kartta", icon: MapIcon },
